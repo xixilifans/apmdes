@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego"
+	"github.com/yufeng/test/controllers"
 
 	"go.elastic.co/apm/module/apmbeego/v2"
 	"go.elastic.co/apm/v2"
@@ -26,6 +27,8 @@ func (c *thingController) Get() {
 }
 
 func main() {
+
+	beego.Router("/infos", &controllers.BaseController{}, "get:GetInfos")
 	beego.Router("/", &thingController{})
 	beego.Router("/thing/:id:int", &thingController{}, "get:Get")
 	beego.RunWithMiddleWares("localhost:8080", apmbeego.Middleware())
