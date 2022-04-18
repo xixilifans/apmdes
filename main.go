@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 
+	"go.mongodb.org/mongo-driver/mongo"
+
 	"github.com/astaxie/beego"
 	"github.com/yufeng/test/controllers"
 
-	"go.elastic.co/apm/module/apmbeego/v2"
+	"go.elastic.co/apm/module/apmbeego"
 	"go.elastic.co/apm/v2"
 )
 
@@ -26,9 +28,32 @@ func (c *thingController) Get() {
 
 }
 
+type MongoClient struct {
+	DatabaseName string
+	_uri         string
+	Database     *mongo.Database
+	Client       *mongo.Client
+}
+
+// var Client *mongo.Client
+
+// func init() {
+// 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+// 	// Connect to MongoDB
+// 	client, _ := mongo.Connect(context.TODO(), options.Client().SetMonitor(apmmongo.CommandMonitor()), clientOptions)
+// 	Client = client
+// }
+
 func main() {
+	// clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	// // Connect to MongoDB
+	// client, _ := mongo.Connect(context.TODO(), options.Client().SetMonitor(apmmongo.CommandMonitor()), clientOptions)
+
+	// _ = client.Ping(context.TODO(), nil)
+	//collection := client.Database("testdb").Collection("people")
 
 	beego.Router("/infos", &controllers.BaseController{}, "get:GetInfos")
+	beego.Router("/gg", &controllers.BaseController{}, "get:GetGG")
 	beego.Router("/", &thingController{})
 	beego.Router("/thing/:id:int", &thingController{}, "get:Get")
 	beego.RunWithMiddleWares("localhost:8080", apmbeego.Middleware())
