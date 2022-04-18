@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	//"context"
+	//"context"
 	"fmt"
 
 	"github.com/astaxie/beego"
@@ -23,6 +25,7 @@ var collection *mongo.Collection
 
 type BaseController struct {
 	beego.Controller
+	tracer *apm.Tracer
 }
 
 var mongoClient *mongo.Client
@@ -40,9 +43,15 @@ func (c *BaseController) Prepare() {
 
 }
 
-func (c *BaseController) GetInfos() {
-	c.Ctx.Output.Body([]byte("prepare world info"))
-}
+// func (c *BaseController) GetInfos() {
+
+// 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+// 	// Connect to MongoDB
+// 	client, _ := mongo.Connect(context.TODO(), options.Client().SetMonitor(apmmongo.CommandMonitor()), clientOptions)
+// 	collection := client.Database("users").Collection("system.users")
+// 	fmt.Println(collection.Find(context.TODO(), nil))
+// 	c.Ctx.Output.Body([]byte("prepare world info"))
+// }
 
 func (c *BaseController) MongoPing() {
 	collection = mongoClient.Database("dbAPM").Collection("poc")
